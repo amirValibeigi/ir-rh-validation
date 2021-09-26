@@ -54,7 +54,7 @@ export const isArray = () => {
  * check empty String or Array
  * @returns {OperatorValidation<Object>}
  */
-export const isEmpty = () => {
+export const empty = () => {
   return new OperatorValidation((obj) => {
     if (obj instanceof Array || typeof obj === "string") return obj.length == 0;
 
@@ -66,7 +66,7 @@ export const isEmpty = () => {
  * check not empty String or Array
  * @returns {OperatorValidation<Array|String>}
  */
-export const isNotEmpty = () => {
+export const notEmpty = () => {
   return new OperatorValidation((obj) => {
     return obj.length != 0;
   });
@@ -76,7 +76,7 @@ export const isNotEmpty = () => {
  * check exist object
  * @returns {OperatorValidation<Object>}
  */
-export const isExist = () => {
+export const exist = () => {
   return new OperatorValidation((obj) => {
     return !(obj == undefined || obj == null);
   });
@@ -86,9 +86,20 @@ export const isExist = () => {
  * check not exist object
  * @returns {OperatorValidation<Object>}
  */
-export const isNotExist = () => {
+export const notExist = () => {
   return new OperatorValidation((obj) => {
     return obj == undefined || obj == null;
+  });
+};
+
+/**
+ * check regex on String
+ * @param {string | RegExp} regex
+ * @returns {OperatorValidation<String>}
+ */
+export const regex = (regex) => {
+  return new OperatorValidation((obj) => {
+    return (obj.match(regex)?.length ?? 0) > 0;
   });
 };
 
@@ -142,7 +153,7 @@ export const hasNotIn = (...values) => {
 };
 
 /**
- * check object is String
+ * check object is date
  * @returns {OperatorValidation<String>}
  */
 export const isDate = () => {
@@ -154,7 +165,7 @@ export const isDate = () => {
 };
 
 /**
- * check object is String
+ * check date has between two date
  * @param {String|Number|Date} startDate
  * @param {String|Number|Date} endDate
  * @returns {OperatorValidation<String>}
@@ -166,7 +177,7 @@ export const rangeDate = (startDate, endDate) => {
 };
 
 /**
- * check object is String
+ * check date has today
  * @returns {OperatorValidation<String>}
  */
 export const isTody = () => {
@@ -176,7 +187,7 @@ export const isTody = () => {
 };
 
 /**
- * check object is email or not
+ * check string is email or not
  * @returns {OperatorValidation<String>}
  */
 export const isEmail = () => {
@@ -190,7 +201,7 @@ export const isEmail = () => {
 };
 
 /**
- * check object is email or not
+ * check object is json
  * @returns {OperatorValidation<String>}
  */
 export const isJson = () => {
@@ -205,7 +216,8 @@ export const isJson = () => {
 };
 
 /**
- * check length string or array
+ * check min length of string or array
+ * @param {Number} length
  * @returns {OperatorValidation<Array|String>}
  */
 export const minLength = (length) => {
@@ -217,7 +229,8 @@ export const minLength = (length) => {
 };
 
 /**
- * check length string or array
+ * check max length of string or array
+ * @param {Number} length
  * @returns {OperatorValidation<Array|String>}
  */
 export const maxLength = (length) => {
@@ -229,7 +242,9 @@ export const maxLength = (length) => {
 };
 
 /**
- * check range number
+ * check number in range
+ * @param {Number} start
+ * @param {Number} end
  * @returns {OperatorValidation<Number>}
  */
 export const rangeNum = (start, end) => {
@@ -239,7 +254,7 @@ export const rangeNum = (start, end) => {
 };
 
 /**
- * equal date
+ * equal two date
  * @param {String|Number|Date} oneDate
  * @param {String|Number|Date} twoDate
  * @returns
@@ -256,7 +271,7 @@ const equalDate = (oneDate, twoDate) => {
 };
 
 /**
- * equal date
+ * date has between two date
  * @param {String|Number|Date} date
  * @param {String|Number|Date} startDate
  * @param {String|Number|Date} endDate
