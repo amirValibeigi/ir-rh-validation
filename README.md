@@ -200,8 +200,6 @@ validation.validate(user, [
 
 ### check property in array
 
-unique item in sorted array
-
 ```javascript
 import { rangeNum, hasNotIn } from "ir-rh-validation/OperatorValidation";
 
