@@ -7,12 +7,11 @@
  */
 
 /**
- *
  * validation object
+ * @template T
  */
 export default class Validation {
   /**
-   * @template T
    * @param {T} obj
    * @param {Array<Rule<T>>} rules
    * @returns {Promise<void>}
@@ -64,6 +63,13 @@ export default class Validation {
         reject(error);
       }
     });
+
+  /**
+   * @param {String|Array<Rule<T>>} [arg]
+   * @returns {Promise<void>}
+   */
+  validateClass = (arg = "rules") =>
+    this.validate(this, typeof arg === "string" ? this[arg] : arg);
 
   /**
    * get property of object
