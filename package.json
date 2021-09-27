@@ -3,12 +3,22 @@
   "version": "1.0.0",
   "description": "validation object, class",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
-    "Validation"
+    "Validation",
+    "npm",
+    "react",
+    "react-native",
+    "express",
+    "javascript"
   ],
   "author": "Amir Valibeigi",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rhv79/ir-rh-validation/issues"
+  },
+  "homepage": "https://github.com/rhv79/ir-rh-validation#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhv79/ir-rh-validation.git"
+  }
 }

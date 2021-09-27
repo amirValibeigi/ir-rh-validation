@@ -10,7 +10,7 @@
  * validation object
  * @template T
  */
-export default class Validation {
+class Validation {
   /**
    * @param {T} obj
    * @param {Array<Rule<T>>} rules
@@ -157,7 +157,7 @@ export default class Validation {
 /**
  * @template O
  */
-export class OperatorValidation {
+class OperatorValidation {
   /**
    * @type {(obj:O)=>Boolean}
    */
@@ -170,3 +170,8 @@ export class OperatorValidation {
     this.callback = callback;
   }
 }
+
+module.exports = {
+  Validation: Validation,
+  OperatorValidation: OperatorValidation,
+};
