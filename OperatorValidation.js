@@ -1,7 +1,7 @@
 import { OperatorValidation } from "./index";
 
 /**
- * check object is Number
+ * check that the object is a Number
  * @returns {OperatorValidation<Object>}
  */
 export const isNumber = () => {
@@ -11,7 +11,7 @@ export const isNumber = () => {
 };
 
 /**
- * check object is String
+ * check that the object is a String
  * @returns {OperatorValidation<Object>}
  */
 export const isString = () => {
@@ -21,7 +21,7 @@ export const isString = () => {
 };
 
 /**
- * check object is Boolean
+ * check that the object is a Boolean
  * @returns {OperatorValidation<Object>}
  */
 export const isBoolean = () => {
@@ -31,7 +31,7 @@ export const isBoolean = () => {
 };
 
 /**
- * check object is Function
+ * check that the object is a Function
  * @returns {OperatorValidation<Object>}
  */
 export const isFun = () => {
@@ -41,7 +41,7 @@ export const isFun = () => {
 };
 
 /**
- * check object is Array
+ * check that the object is a Array
  * @returns {OperatorValidation<Object>}
  */
 export const isArray = () => {
@@ -51,7 +51,7 @@ export const isArray = () => {
 };
 
 /**
- * check empty String or Array
+ * check that the string or array is not empty
  * @returns {OperatorValidation<Object>}
  */
 export const empty = () => {
@@ -63,7 +63,7 @@ export const empty = () => {
 };
 
 /**
- * check not empty String or Array
+ * check that the string or array is empty
  * @returns {OperatorValidation<Array|String>}
  */
 export const notEmpty = () => {
@@ -73,7 +73,7 @@ export const notEmpty = () => {
 };
 
 /**
- * check exist object
+ * check that the object is exist
  * @returns {OperatorValidation<Object>}
  */
 export const exist = () => {
@@ -83,7 +83,7 @@ export const exist = () => {
 };
 
 /**
- * check not exist object
+ * check that the object is not exist
  * @returns {OperatorValidation<Object>}
  */
 export const notExist = () => {
@@ -94,19 +94,40 @@ export const notExist = () => {
 
 /**
  * check regex on String
- * @param {string | RegExp} regex
+ * @param {string | RegExp} regexp - An object that supports being matched against.
+ *
+ * @example
+ * //check that string is only number
+ * //12345
+ * regex(/^[0-9]*$/g);
+ * //return true
+ *
  * @returns {OperatorValidation<String>}
  */
-export const regex = (regex) => {
+export const regex = (regexp) => {
   return new OperatorValidation((obj) => {
-    return (obj.match(regex)?.length ?? 0) > 0;
+    return (obj.match(regexp)?.length ?? 0) > 0;
   });
 };
 
 /**
- * check has object in values
+ * check that object in values is exist
  * @template T
- * @param {...T} values
+ * @param {...T} values - array of object
+ *
+ * @example
+ * //check that item of array is 1 or 2 or 3
+ * //2
+ * hasIn(1,2,3);
+ * //return true
+ *
+ *
+ * @example
+ * //check the permission user of array is 'admin' or 'user'
+ * //guest
+ * hasIn('admin','user');
+ * //return false
+ *
  * @returns {OperatorValidation<Array<T>|String|Number>}
  */
 export const hasIn = (...values) => {
@@ -128,9 +149,23 @@ export const hasIn = (...values) => {
 };
 
 /**
- * check has not object in values
+ * check that object in values is not exist
  * @template T
- * @param {...T} values
+ * @param {...T} values - array of object
+ *
+ * @example
+ * //check that item of array is not 1 or 2 or 3
+ * //2
+ * hasIn(1,2,3);
+ * //return false
+ *
+ *
+ * @example
+ * //check the permission user of array is not 'admin' or 'user'
+ * //guest
+ * hasIn('admin','user');
+ * //return true
+ *
  * @returns {OperatorValidation<Array<T>|String|Number>}
  */
 export const hasNotIn = (...values) => {
@@ -153,7 +188,7 @@ export const hasNotIn = (...values) => {
 };
 
 /**
- * check object is date
+ * check that object is date
  * @returns {OperatorValidation<String>}
  */
 export const isDate = () => {
@@ -165,9 +200,21 @@ export const isDate = () => {
 };
 
 /**
- * check date has between two date
- * @param {String|Number|Date} startDate
- * @param {String|Number|Date} endDate
+ * check that date has between two date
+ * @param {String|Number|Date} startDate - from date
+ * @param {String|Number|Date} endDate - to date
+ *
+ * @example
+ * //check that date has between two timestamp
+ * //1631667600000
+ * rangeDate(1630458000000,1632963600000)
+ * //return true
+ *
+ * @example
+ * //check that date has between two date
+ * //1631667600000
+ * rangeDate('Wednesday, September 1, 2021 1:00:00 AM','Thursday, September 30, 2021 1:00:00 AM')
+ *
  * @returns {OperatorValidation<String>}
  */
 export const rangeDate = (startDate, endDate) => {
@@ -177,7 +224,7 @@ export const rangeDate = (startDate, endDate) => {
 };
 
 /**
- * check date has today
+ *check that date is today
  * @returns {OperatorValidation<String>}
  */
 export const isTody = () => {
@@ -187,7 +234,7 @@ export const isTody = () => {
 };
 
 /**
- * check string is email or not
+ * check that String is email address
  * @returns {OperatorValidation<String>}
  */
 export const isEmail = () => {
@@ -201,8 +248,8 @@ export const isEmail = () => {
 };
 
 /**
- * check object is json
- * @returns {OperatorValidation<String>}
+ * check that Object is  json
+ * @returns {OperatorValidation<String|Object>}
  */
 export const isJson = () => {
   return new OperatorValidation((obj) => {
@@ -217,7 +264,13 @@ export const isJson = () => {
 
 /**
  * check min length of string or array
- * @param {Number} length
+ * @param {Number} length - length of string or array
+ *
+ * @example
+ * //['a','b','c'] or 'abc'
+ * minLength(2)
+ * //return true
+ *
  * @returns {OperatorValidation<Array|String>}
  */
 export const minLength = (length) => {
@@ -230,7 +283,13 @@ export const minLength = (length) => {
 
 /**
  * check max length of string or array
- * @param {Number} length
+ * @param {Number} length - length of string or array
+ *
+ * @example
+ * //['a','b','c'] or 'abc'
+ * maxLength(3)
+ * //return true
+ *
  * @returns {OperatorValidation<Array|String>}
  */
 export const maxLength = (length) => {
@@ -242,9 +301,49 @@ export const maxLength = (length) => {
 };
 
 /**
+ * check min number
+ * @param {Number} min - min number
+ *
+ * @example
+ * //5
+ * minNum(2)
+ * //return true
+ *
+ * @returns {OperatorValidation<Number>}
+ */
+export const minNum = (min) => {
+  return new OperatorValidation((obj) => {
+    return obj >= min;
+  });
+};
+
+/**
+ * check max number
+ * @param {Number} max - max number
+ *
+ * @example
+ * //5
+ * maxNum(5)
+ * //return true
+ *
+ * @returns {OperatorValidation<Number>}
+ */
+export const maxNum = (max) => {
+  return new OperatorValidation((obj) => {
+    return obj <= max;
+  });
+};
+
+/**
  * check number in range
  * @param {Number} start
  * @param {Number} end
+ *
+ * @example
+ * //5
+ * rangeNum(4,6)
+ * //return true
+ *
  * @returns {OperatorValidation<Number>}
  */
 export const rangeNum = (start, end) => {
@@ -254,9 +353,42 @@ export const rangeNum = (start, end) => {
 };
 
 /**
- * equal two date
- * @param {String|Number|Date} oneDate
- * @param {String|Number|Date} twoDate
+ * unique item in sorted array
+ * @param {String} nameProperty - name property of object
+ *
+ * @example
+ * //[1,2,3,4,5,6]
+ * unique()
+ * //return true
+ *
+ * @example
+ * //[1,1,3,4,5,6]
+ * unique()
+ * //return false
+ *
+ * @example
+ * //[{id:1},{id:2},{id:3}]
+ * unique('id')
+ * //return true
+ *
+ * @returns {OperatorValidation<Object>}
+ */
+export const unique = (nameProperty = undefined) => {
+  return new OperatorValidation((obj, preObj) => {
+    if (nameProperty) {
+      if (preObj === undefined) return true;
+
+      return preObj[nameProperty] != (obj[nameProperty] ?? undefined);
+    }
+
+    return preObj !== obj;
+  });
+};
+
+/**
+ * two date is equal
+ * @param {String|Number|Date} oneDate - date
+ * @param {String|Number|Date} twoDate - date
  * @returns
  */
 const equalDate = (oneDate, twoDate) => {
@@ -271,10 +403,10 @@ const equalDate = (oneDate, twoDate) => {
 };
 
 /**
- * date has between two date
- * @param {String|Number|Date} date
- * @param {String|Number|Date} startDate
- * @param {String|Number|Date} endDate
+ * check that date has between two date
+ * @param {String|Number|Date} date - date
+ * @param {String|Number|Date} startDate - from date
+ * @param {String|Number|Date} endDate - to date
  * @returns
  */
 const betweenDate = (date, startDate, endDate) => {

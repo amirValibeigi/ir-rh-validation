@@ -102,12 +102,13 @@ export default class Validation {
    * @template O
    * @param {OperatorValidation<O>} match
    * @param {{obj:Object,type:('object'|'array'),name:Array<String>}} property
+   * @param {Object} prevObj
    */
-  #checkProperties = (match, property) => {
+  #checkProperties = (match, property, prevObj) => {
     if (property === undefined) return false;
 
     if (property.type === "object")
-      return match.callback.call(this, property.obj);
+      return match.callback.call(this, property.obj, prevObj);
 
     /**
      * @type {Array}
@@ -122,23 +123,25 @@ export default class Validation {
     if (!isNumber && !isFull)
       return this.#checkProperties(
         match,
-        this.#getPropertyOfObject(arr, names)
+        this.#getPropertyOfObject(arr, names),
+        prevObj
       );
 
     let index = isFull ? 0 : name,
-      len = isFull ? arr.length : Number(name) + 1;
+      len = isFull ? arr.length : Number(name) + 1,
+      tPreObj = prevObj,
+      tPreResult = false;
 
     for (; index < len; index++) {
-      if (
-        this.#checkProperties(
-          match,
-          this.#getPropertyOfObject(
-            arr,
-            isFull ? [index, ...names.slice(1, names.length)] : names
-          )
-        ) === false
-      )
-        return false;
+      const obj = this.#getPropertyOfObject(
+        arr,
+        isFull ? [index, ...names.slice(1, names.length)] : names
+      );
+      tPreResult = this.#checkProperties(match, obj, tPreObj);
+
+      tPreObj = obj.obj;
+
+      if (tPreResult === false) return false;
     }
 
     return isFull ? arr.length <= index : true;
@@ -155,7 +158,7 @@ export class OperatorValidation {
   callback;
 
   /**
-   * @param {(obj:O)=>Boolean} callback
+   * @param {(obj:O,preObj:O=undefined)=>Boolean} callback
    */
   constructor(callback) {
     this.callback = callback;
