@@ -5,11 +5,12 @@
   "main": "index.js",
   "keywords": [
     "Validation",
-    "npm",
+    "validator",
     "react",
     "react-native",
     "express",
-    "javascript"
+    "javascript",
+    "es6"
   ],
   "author": "Amir Valibeigi",
   "license": "ISC",
