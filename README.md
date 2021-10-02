@@ -296,6 +296,12 @@ user.validateClass([
 ]);
 ```
 
+## String Rules
+
+```javascript
+validation.validate(user, ["email:isEmail,maxLength 16"]); //true
+```
+
 ## methods
 
 - object (array, number, string, ...)
