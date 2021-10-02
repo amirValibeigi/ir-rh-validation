@@ -13,13 +13,34 @@
 export default class Validation {
   /**
    * @param {T} obj
-   * @param {Array<Rule<T>>} rules
+   * @param {Array<Rule<T>|String>} rules
+   *
+   * @example
+   * validate({email: "amir@example.com"}, [{ name: "email", matches: [Operators.isEmail(), Operators.maxLength(16)] },])
+   * //return true
+   *
+   * @example
+   * validate({email: "amir@example.com"}, ["email:isEmail,maxLength 16"])
+   * //return true
+   *
    * @returns {Promise<void>}
    */
   validate = (obj, rules) =>
     new Promise((resolve, reject) => {
       try {
-        for (const rule of rules) {
+        let tmpRules = [];
+
+        try {
+          tmpRules = this.#makeRules(rules);
+        } catch (error) {
+          reject({
+            message: "error make rules",
+            error,
+          });
+          return;
+        }
+
+        for (const rule of tmpRules) {
           let lastMatch = 0;
           let tmpObject = undefined;
           const len = rule.matches.length;
@@ -151,6 +172,39 @@ export default class Validation {
     }
 
     return isFull ? arr.length <= index : true;
+  };
+
+  /**
+   * @param {Array<Rule<T>|String>} rules
+   * @returns {Array<Rule<T>>}
+   */
+  #makeRules = (rules) => {
+    const tmpRules = [];
+    for (let iRule = 0; iRule < rules.length; iRule++) {
+      if (typeof rules[iRule] === "string") {
+        const propertiesAndMethod = rules[iRule].split(":");
+        const rule = { name: propertiesAndMethod[0], matches: [] };
+        const methods = propertiesAndMethod[1].split(",");
+
+        for (const method of methods) {
+          const nameAndArgs = method.split(" ");
+
+          rule.matches.push(
+            require("./OperatorValidation")[nameAndArgs[0]].call(
+              this,
+              ...nameAndArgs.slice(1)
+            )
+          );
+        }
+
+        tmpRules.push(rule);
+
+        continue;
+      }
+      tmpRules.push(rules[iRule]);
+    }
+
+    return tmpRules;
   };
 }
 
