@@ -1,6 +1,6 @@
 {
   "name": "ir-rh-validation",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "validation object, class",
   "main": "index.js",
   "keywords": [
