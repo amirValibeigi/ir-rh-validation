@@ -1,0 +1,38 @@
+{
+  "attributes": {},
+  "validations": {
+    "data": {
+      "range": "The :attribute must be between :start and :end date.",
+      "today": "The :attribute is not a valid date."
+    },
+    "empty": "The :attribute field does not empty.",
+    "exists": "The selected :attribute is invalid.",
+    "hasIn": "The :attribute field does not exist in (:values).",
+    "hasNotIn": "The :attribute field does exist in (:values).",
+    "isArray": "The :attribute must be an array.",
+    "isBoolean": "The :attribute field must be true or false.",
+    "isDate": "The :attribute is not a valid date.",
+    "isEmail": "The :attribute must be a valid email address.",
+    "isFun": "The :attribute must be function.",
+    "isJson": "The :attribute must be a valid JSON string.",
+    "isNumber": "The :attribute must be a number.",
+    "isString": "The :attribute must be a string.",
+    "notEmpty": "The :attribute field does empty.",
+    "notExists": "The selected :attribute is invalid.",
+    "number": {
+      "max": "The :attribute must not be greater than :max.",
+      "min": "The :attribute must be at least :min.",
+      "range": "The :attribute must be between :start and :end."
+    },
+    "string": {
+      "max": "The :attribute may not be greater than :length characters.",
+      "min": "The :attribute must be at least :length characters.",
+      "regex": "The :attribute format is invalid."
+    },
+    "unique": "The :attribute has already been taken.",
+    "validation": {
+      "Exception": "sorry, validation is crash.",
+      "KeyException": "not found key"
+    }
+  }
+}

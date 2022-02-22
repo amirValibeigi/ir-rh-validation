@@ -1,0 +1,38 @@
+{
+  "attributes": {},
+  "validations": {
+    "data": {
+      "range": "مقدار :attribute باید بین :start و :end تاریخ باشد.",
+      "today": "مقدار :attribute درست نمی باشد."
+    },
+    "empty": "مقدار :attribute باید خالی باشد.",
+    "exists": "مقدار :attribute مورد نظر وجود ندارد.",
+    "hasIn": "مقدار :attribute باید شامل (:values) باشد.",
+    "hasNotIn": "مقدار :attribute نباید شامل (:values) باشد.",
+    "isArray": ":attribute باید آرایه باشد.",
+    "isBoolean": "مقدار :attribute باید درست یا نادرست باشد.",
+    "isDate": "مقدار :attribute تاریخ صحیحی نمی باشد.",
+    "isEmail": "مقدار :attribute باید حساب الکترونیکی باشد.",
+    "isFun": "مقدار :attribute باید function باشد.",
+    "isJson": "مقدار :attribute باید فرمت JSON باشد.",
+    "isNumber": "مقدار :attribute باید عدد باشد.",
+    "isString": "مقدار :attribute باید متن باشد.",
+    "notEmpty": "مقدار :attribute نباید خالی باشد.",
+    "notExists": "مقدار :attribute نباید وجود داشته باشد.",
+    "number": {
+      "max": "مقدار :attribute باید کمتر از :max باشد.",
+      "min": "مقدار :attribute باید بیشتر از :min باشد.",
+      "range": "مقدار :attribute باید بین :start و :end باشد."
+    },
+    "string": {
+      "max": "طول متن :attribute باید کمتر از :length حروف باشد.",
+      "min": "طول متن :attribute باید بیشتر از :length حروف باشد.",
+      "regex": "مقدار متن :attribute با فرمت تعیین شده همخوانی ندارد."
+    },
+    "unique": "مقدار :attribute نباید تکراری باشد.",
+    "validation": {
+      "Exception": "متاسفانه خطایی رخ داده است.",
+      "KeyException": "کلید مورد نظر یافت نشد."
+    }
+  }
+}

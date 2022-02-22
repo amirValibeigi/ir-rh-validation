@@ -7,7 +7,7 @@ import { OperatorValidation } from "./index";
 export const isNumber = () => {
   return new OperatorValidation((obj) => {
     return typeof obj === "number";
-  });
+  }, "isNumber");
 };
 
 /**
@@ -17,7 +17,7 @@ export const isNumber = () => {
 export const isString = () => {
   return new OperatorValidation((obj) => {
     return typeof obj === "string";
-  });
+  }, "isString");
 };
 
 /**
@@ -27,7 +27,7 @@ export const isString = () => {
 export const isBoolean = () => {
   return new OperatorValidation((obj) => {
     return typeof obj === "boolean";
-  });
+  }, "isBoolean");
 };
 
 /**
@@ -37,7 +37,7 @@ export const isBoolean = () => {
 export const isFun = () => {
   return new OperatorValidation((obj) => {
     return typeof obj === "function";
-  });
+  }, "isFun");
 };
 
 /**
@@ -47,7 +47,7 @@ export const isFun = () => {
 export const isArray = () => {
   return new OperatorValidation((obj) => {
     return obj instanceof Array;
-  });
+  }, "isArray");
 };
 
 /**
@@ -59,7 +59,7 @@ export const empty = () => {
     if (obj instanceof Array || typeof obj === "string") return obj.length == 0;
 
     return false;
-  });
+  }, "empty");
 };
 
 /**
@@ -69,27 +69,27 @@ export const empty = () => {
 export const notEmpty = () => {
   return new OperatorValidation((obj) => {
     return obj.length != 0;
-  });
+  }, "notEmpty");
 };
 
 /**
- * check that the object is exist
+ * check that the object is exists
  * @returns {OperatorValidation<Object>}
  */
-export const exist = () => {
+export const exists = () => {
   return new OperatorValidation((obj) => {
     return !(obj == undefined || obj == null);
-  });
+  }, "exists");
 };
 
 /**
- * check that the object is not exist
+ * check that the object is not exists
  * @returns {OperatorValidation<Object>}
  */
-export const notExist = () => {
+export const notExists = () => {
   return new OperatorValidation((obj) => {
     return obj == undefined || obj == null;
-  });
+  }, "notExists");
 };
 
 /**
@@ -105,13 +105,17 @@ export const notExist = () => {
  * @returns {OperatorValidation<String>}
  */
 export const regex = (regexp) => {
-  return new OperatorValidation((obj) => {
-    return (obj.match(regexp)?.length ?? 0) > 0;
-  });
+  return new OperatorValidation(
+    (obj) => {
+      return (obj.match(regexp)?.length ?? 0) > 0;
+    },
+    "string.regex",
+    { regexp }
+  );
 };
 
 /**
- * check that object in values is exist
+ * check that object in values is exists
  * @template T
  * @param {...T} values - array of object
  *
@@ -131,25 +135,29 @@ export const regex = (regexp) => {
  * @returns {OperatorValidation<Array<T>|String|Number>}
  */
 export const hasIn = (...values) => {
-  return new OperatorValidation((obj) => {
-    if (typeof obj === "string" || typeof obj === "number") {
-      return values.includes(obj);
-    }
+  return new OperatorValidation(
+    (obj) => {
+      if (typeof obj === "string" || typeof obj === "number") {
+        return values.includes(obj);
+      }
 
-    if (obj instanceof Array) {
-      for (const v of values) {
-        if (obj.includes(v)) {
-          return true;
+      if (obj instanceof Array) {
+        for (const v of values) {
+          if (obj.includes(v)) {
+            return true;
+          }
         }
       }
-    }
 
-    return false;
-  });
+      return false;
+    },
+    "hasIn",
+    { values: values.join(", ") }
+  );
 };
 
 /**
- * check that object in values is not exist
+ * check that object in values is not exists
  * @template T
  * @param {...T} values - array of object
  *
@@ -169,22 +177,26 @@ export const hasIn = (...values) => {
  * @returns {OperatorValidation<Array<T>|String|Number>}
  */
 export const hasNotIn = (...values) => {
-  return new OperatorValidation((obj) => {
-    if (typeof obj === "string" || typeof obj === "number") {
-      return !values.includes(obj);
-    }
-
-    if (obj instanceof Array) {
-      for (const v of values) {
-        if (obj.includes(v)) {
-          return false;
-        }
+  return new OperatorValidation(
+    (obj) => {
+      if (typeof obj === "string" || typeof obj === "number") {
+        return !values.includes(obj);
       }
-      return true;
-    }
 
-    return false;
-  });
+      if (obj instanceof Array) {
+        for (const v of values) {
+          if (obj.includes(v)) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      return false;
+    },
+    "hasNotIn",
+    { values: values.join(", ") }
+  );
 };
 
 /**
@@ -196,7 +208,7 @@ export const isDate = () => {
     const d = new Date(isFinite(obj) ? Number(obj) : obj);
 
     return !(d == undefined || d == null || d == "Invalid Date");
-  });
+  }, "isDate");
 };
 
 /**
@@ -218,19 +230,23 @@ export const isDate = () => {
  * @returns {OperatorValidation<String>}
  */
 export const rangeDate = (startDate, endDate) => {
-  return new OperatorValidation((obj) => {
-    return betweenDate(isFinite(obj) ? Number(obj) : obj, startDate, endDate);
-  });
+  return new OperatorValidation(
+    (obj) => {
+      return betweenDate(isFinite(obj) ? Number(obj) : obj, startDate, endDate);
+    },
+    "data.range",
+    { start: startDate, end: endDate }
+  );
 };
 
 /**
  *check that date is today
  * @returns {OperatorValidation<String>}
  */
-export const isTody = () => {
+export const isToday = () => {
   return new OperatorValidation((obj) => {
     return equalDate(new Date(), isFinite(obj) ? Number(obj) : obj);
-  });
+  }, "date.today");
 };
 
 /**
@@ -240,11 +256,12 @@ export const isTody = () => {
 export const isEmail = () => {
   return new OperatorValidation((obj) => {
     return (
+      typeof obj === "string" &&
       (obj.match(
         /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
       )?.length ?? 0) >= 1
     );
-  });
+  }, "isEmail");
 };
 
 /**
@@ -259,7 +276,7 @@ export const isJson = () => {
     } catch (error) {}
 
     return false;
-  });
+  }, "isJson");
 };
 
 /**
@@ -274,11 +291,15 @@ export const isJson = () => {
  * @returns {OperatorValidation<Array|String>}
  */
 export const minLength = (length) => {
-  return new OperatorValidation((obj) => {
-    if (typeof obj === "number") return String(obj).length >= length;
+  return new OperatorValidation(
+    (obj) => {
+      if (typeof obj === "number") return String(obj).length >= length;
 
-    return obj.length >= length;
-  });
+      return obj.length >= length;
+    },
+    "string.min",
+    { length }
+  );
 };
 
 /**
@@ -293,11 +314,15 @@ export const minLength = (length) => {
  * @returns {OperatorValidation<Array|String>}
  */
 export const maxLength = (length) => {
-  return new OperatorValidation((obj) => {
-    if (typeof obj === "number") return String(obj).length <= length;
+  return new OperatorValidation(
+    (obj) => {
+      if (typeof obj === "number") return String(obj).length <= length;
 
-    return obj.length <= length;
-  });
+      return obj.length <= length;
+    },
+    "string.max",
+    { length }
+  );
 };
 
 /**
@@ -312,9 +337,13 @@ export const maxLength = (length) => {
  * @returns {OperatorValidation<Number>}
  */
 export const minNum = (min) => {
-  return new OperatorValidation((obj) => {
-    return obj >= min;
-  });
+  return new OperatorValidation(
+    (obj) => {
+      return obj >= min;
+    },
+    "number.min",
+    { min }
+  );
 };
 
 /**
@@ -329,9 +358,13 @@ export const minNum = (min) => {
  * @returns {OperatorValidation<Number>}
  */
 export const maxNum = (max) => {
-  return new OperatorValidation((obj) => {
-    return obj <= max;
-  });
+  return new OperatorValidation(
+    (obj) => {
+      return obj <= max;
+    },
+    "number.max",
+    { max }
+  );
 };
 
 /**
@@ -347,9 +380,13 @@ export const maxNum = (max) => {
  * @returns {OperatorValidation<Number>}
  */
 export const rangeNum = (start, end) => {
-  return new OperatorValidation((obj) => {
-    return obj >= start && obj <= end;
-  });
+  return new OperatorValidation(
+    (obj) => {
+      return obj >= start && obj <= end;
+    },
+    "number.range",
+    { start, end }
+  );
 };
 
 /**
@@ -374,15 +411,19 @@ export const rangeNum = (start, end) => {
  * @returns {OperatorValidation<Object>}
  */
 export const unique = (nameProperty = undefined) => {
-  return new OperatorValidation((obj, preObj) => {
-    if (nameProperty) {
-      if (preObj === undefined) return true;
+  return new OperatorValidation(
+    (obj, preObj) => {
+      if (nameProperty) {
+        if (preObj === undefined) return true;
 
-      return preObj[nameProperty] != (obj[nameProperty] ?? undefined);
-    }
+        return preObj[nameProperty] != (obj[nameProperty] ?? undefined);
+      }
 
-    return preObj !== obj;
-  });
+      return preObj !== obj;
+    },
+    "unique",
+    { nameProperty }
+  );
 };
 
 /**

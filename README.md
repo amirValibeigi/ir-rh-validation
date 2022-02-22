@@ -30,7 +30,7 @@ const user = {
 };
 
 validation
-  .validate(user, [
+  .validatePromise(user, [
     {
       name: "email",
       matches: [isEmail()], //true
@@ -65,7 +65,7 @@ validation.validate(user, [
 
 ### hasIn
 
-check that object in values is exist
+check that object in values is exists
 
 ```javascript
 import { hasIn } from "ir-rh-validation/OperatorValidation";
@@ -80,7 +80,7 @@ validation.validate(user, [
 
 ### hasNotIn
 
-check that object in values is not exist
+check that object in values is not exists
 
 ```javascript
 import { hasNotIn } from "ir-rh-validation/OperatorValidation";
@@ -229,9 +229,13 @@ import { OperatorValidation } from "ir-rh-validation";
  * @returns {OperatorValidation<Array<String>>}
  */
 const hasColor = (color) =>
-  new OperatorValidation((obj) => {
-    return obj.includes(color);
-  });
+  new OperatorValidation(
+    (obj) => {
+      return obj.includes(color);
+    },
+    "hasColor",
+    { color }
+  );
 
 validation.validate(user, [
   {
@@ -240,6 +244,57 @@ validation.validate(user, [
   },
 ]);
 ```
+
+## Customize Message
+
+```javascript
+const validation = new Validation("fa", {
+  validations: {
+    string: {
+      max: "طول متن :attribute باید کمتر از :length باشد.",
+    },
+  },
+  attributes: {
+    history: {
+      "*": {
+        id: "شماره یکتا",
+        site: "هر سایت",
+      },
+    },
+    colorSelect: "رنگ انتخابی",
+  },
+});
+
+if (
+  validation.validate(user, [
+    {
+      name: "history.*.site",
+      matches: [maxLength(5)], //false
+    },
+  ]) == false
+) {
+  console.log(validation.getMessageError());
+}
+
+if (
+  validation.validate(user, [
+    {
+      name: "colorSelect",
+      matches: [hasIn("yellow")], //false
+    },
+  ]) == false
+) {
+  console.log(validation.getMessageError());
+}
+```
+
+output 1:
+
+> طول متن هر سایت باید کمتر از 5 باشد.
+
+output 2:
+
+> مقدار رنگ انتخابی باید شامل (yellow) باشد.
 
 ## usage on class
 
@@ -278,7 +333,7 @@ export default class UserModel extends Validation {
 
 ```javascript
 import {
-  exist,
+  exists,
   maxLength,
   minLength,
 } from "ir-rh-validation/OperatorValidation";
@@ -291,7 +346,7 @@ user.validateClass("rules1"); //false
 user.validateClass([
   {
     name: "email",
-    matches: [exist()], //false
+    matches: [exists()], //false
   },
 ]);
 ```
@@ -315,14 +370,14 @@ validation.validate(user, ["email:isEmail,maxLength 16"]); //true
   - isNumber
   - isString
   - isFun
-  - exist
-  - notExist
+  - exists
+  - notExists
   - [hasIn](#hasin)
   - [hasNotIn](#hasNotin)
   - isJson
   - isDate
   - [rangeDate](#rangedate)
-  - isTody
+  - isToday
 
 - number
 
